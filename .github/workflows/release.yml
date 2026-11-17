@@ -1,0 +1,19 @@
+# Tests, then builds and publishes the plugin zip when a vX.Y.Z tag is pushed.
+# Managed from carmelosantana/kanboard-plugins (templates/workflows/); update it with
+# scripts/sync-workflows.sh there rather than by hand.
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  test:
+    uses: carmelosantana/kanboard-plugins/.github/workflows/plugin-test.yml@f5ab6c4d42c5199bd30fdad073d4c3d8cdf3b0d7 # harness 2026-11-17
+  release:
+    needs: test
+    permissions:
+      contents: write
+    uses: carmelosantana/kanboard-plugins/.github/workflows/plugin-release.yml@f5ab6c4d42c5199bd30fdad073d4c3d8cdf3b0d7 # harness 2026-11-17
+    with:
+      ship-docs: false

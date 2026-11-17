@@ -34,9 +34,12 @@ class Plugin extends Base
         return 'Carmelo Santana';
     }
 
+    // The version lives only in plugin.json; the release workflow checks the tag against it.
     public function getPluginVersion(): string
     {
-        return '1.0.0';
+        static $version;
+
+        return $version ??= (string) (json_decode((string) file_get_contents(__DIR__ . '/plugin.json'), true)['version'] ?? '');
     }
 
     public function getCompatibleVersion(): string
